@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facebooc-deployment
+  labels:
+    app: facebooc
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: facebooc
+  template:
+    metadata:
+      labels:
+        app: facebooc 
+    spec:
+      containers:
+      - name: facebooc
+        image: fdjapi10/facebooc:main
+        ports:
+        - containerPort: 16000
+        
+        
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: facebooc-service
+spec:
+  selector:
+    app: facebooc 
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 16000
+    nodePort: 30110
